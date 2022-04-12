@@ -4,7 +4,7 @@ use std::collections::BTreeMap;
     use lazy_static::lazy_static;
 
     lazy_static!{
-        static ref Tag_Map: BTreeMap<u16, &'static str> = BTreeMap::from([
+        static ref TAG_MAP: BTreeMap<u16, &'static str> = BTreeMap::from([
             (254,	"NewSubfileType" ),
             (255,	"SubfileType" ),
             (256,	"ImageWidth" ),
@@ -359,7 +359,7 @@ use std::collections::BTreeMap;
 
     pub fn get_name(tag: impl Into<u16>) -> Option<String>{
         let tag = tag.into();
-        let name = Tag_Map.get(&tag);
+        let name = TAG_MAP.get(&tag);
 
         match name {
             Some(name) => Some(name.to_owned().to_string()),
