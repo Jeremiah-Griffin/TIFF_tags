@@ -6,7 +6,7 @@ license = "MIT"
 keywords = ["image", "metadata", "exif", "TIFF", "tags", "ifd"]
 categories = ["multimedia::images"]
 description = "A BTreeMap and getter method to return the name of a TIFF/EXIF tag given its u16 tag ID."
-readme = ["README.md"]
+readme = "README.md"
 repository = "https://github.com/Jeremiah-Griffin/TIFF_tags"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
