@@ -1,6 +1,6 @@
 # TIFF_tags
 
-A  BTreeMap and getter method to return the name of a TIFF/EXIF tag given its u16 tag ID.
+A  look up table to return the name of a TIFF/EXIF tag given its u16 tag ID.
 
 MIT license. Please cite the United States Libarary of Congress: 
 
