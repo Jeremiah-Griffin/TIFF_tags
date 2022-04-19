@@ -1,10 +1,11 @@
 mod tests;
 
 use std::collections::BTreeMap;
+use std::collections::BTreeSet;
     use lazy_static::lazy_static;
 
     lazy_static!{
-        static ref TAG_MAP: BTreeMap<u16, &'static str> = BTreeMap::from([
+        static ref TAG_MAP: BTreeSet<(u16, &'static str)> = BTreeSet::from([
             (254,	"NewSubfileType" ),
             (255,	"SubfileType" ),
             (256,	"ImageWidth" ),
@@ -358,13 +359,35 @@ use std::collections::BTreeMap;
         ]);
     }
 
+
     pub fn get_name(tag: impl Into<u16>) -> Option<String>{
         let tag = tag.into();
-        let name = TAG_MAP.get(&tag);
+        let iter = TAG_MAP.iter();
+        let mut kvp: Vec<&(u16, &str)> = iter.filter(|kvp| kvp.0 == tag).collect();
 
-        match name {
-            Some(name) => Some(name.to_owned().to_string()),
-            None => None
+
+        match kvp.len() {
+            0 => Option::None,
+            1 => Option::Some(kvp.pop().unwrap().to_owned().1.to_string()),
+            //>1 returns no error as it is not against the spec for a registered tag to have multiple names.
+            //in which case, you're probably better off with no value rather than multiple.
+            _ => Option::None
         }
     }
+
+    pub fn get_id(name: impl Into<String>) -> Option<u16>{
+
+        let name = name.into();
+        let iter = TAG_MAP.iter();
+        let mut kvp: Vec<&(u16, &str)> = iter.filter(|kvp| *kvp.1 == name).collect();
+
+        match kvp.len() {
+            0 => Option::None,
+            1 => Option::Some(kvp.pop().unwrap().to_owned().0),
+            //>1 returns no error as it is not against the spec for a registered tag to have multiple names.
+            //in which case, you're probably better off with no value rather than multiple.
+            _ => Option::None
+        }
+    }
+
 
