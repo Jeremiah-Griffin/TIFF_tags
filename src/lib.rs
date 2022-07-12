@@ -103,7 +103,7 @@ static TAG_MAP: LazyLock<BTreeSet<(u16, &'static str)>> = LazyLock::new(||{
         (18246,	"Image.Rating" ),
         (18249,	"Image.RatingPercent" ),
         (32781,	"ImageID" ),
-        (32932,	"Wang Annotation" ),
+        (32932,	"WangAnnotation" ),
         (33421,	"CFARepeatPatternDim" ),
         (33422,	"CFAPattern" ),
         (33423,	"BatteryLevel" ),
@@ -117,7 +117,7 @@ static TAG_MAP: LazyLock<BTreeSet<(u16, &'static str)>> = LazyLock::new(||{
         (33449,	"MD_SampleInfo" ),
         (33450,	"MD_PrepDate" ),
         (33451,	"MD_PrepTime" ),
-        (33452,	"MD_ FileUnits" ),
+        (33452,	"MD_FileUnits" ),
         (33550,	"ModelPixelScaleTag" ),
         (33723,	"IPTC/NAA" ),
         (33918,	"INGR_Packet_Data_Tag" ),
@@ -213,7 +213,7 @@ static TAG_MAP: LazyLock<BTreeSet<(u16, &'static str)>> = LazyLock::new(||{
         (40962,	"PixelXDimension" ),
         (40963,	"PixelYDimension" ),
         (40964,	"RelatedSoundFile" ),
-        (40965,	"Interoperability IFD" ),
+        (40965,	"InteroperabilityIFD" ),
         (41483,	"FlashEnergy" ),
         (41484,	"SpatialFrequencyResponse" ),
         (41486,	"FocalPlaneXResolution" ),
@@ -306,7 +306,7 @@ static TAG_MAP: LazyLock<BTreeSet<(u16, &'static str)>> = LazyLock::new(||{
         (50779,	"CalibrationIlluminant2" ),
         (50780,	"BestQualityScale" ),
         (50781,	"RawDataUniqueID" ),
-        (50784,	"Alias Layer Metadata" ),
+        (50784,	"AliasLayerMetadata" ),
         (50827,	"OriginalRawFileName" ),
         (50828,	"OriginalRawFileData" ),
         (50829,	"ActiveArea" ),
@@ -364,7 +364,9 @@ static TAG_MAP: LazyLock<BTreeSet<(u16, &'static str)>> = LazyLock::new(||{
 
 
 
-
+    ///Given a u16 id number, return either its name or None if the tag is not registered.
+    ///Note that this function will return None if multiple tags are registered, as this is technically not against the spec.
+    ///However, no duplicates tags currently are registered according to the source used.
     pub fn get_name(tag: impl Into<u16>) -> Option<String>{
         let tag = tag.into();
         let iter = TAG_MAP.iter();
@@ -374,12 +376,13 @@ static TAG_MAP: LazyLock<BTreeSet<(u16, &'static str)>> = LazyLock::new(||{
         match kvp.len() {
             0 => None,
             1 => Some(kvp.pop().unwrap().to_owned().1.to_string()),
-            //>1 returns no error as it is not against the spec for a registered tag to have multiple names.
-            //in which case, you're probably better off with no value rather than multiple.
             _ => None
         }
     }
 
+    ///Given the exact name of a tag, return either its u16 ID or None if it is not registered.
+    ///Note that this function will return None if multiple tags are registered, as this is technically not against the spec.
+    ///However, no duplicates tags currently are registered according to the source used.
     pub fn get_id(name: impl Into<String>) -> Option<u16>{
 
         let name = name.into();
@@ -389,8 +392,6 @@ static TAG_MAP: LazyLock<BTreeSet<(u16, &'static str)>> = LazyLock::new(||{
         match kvp.len() {
             0 => None,
             1 => Some(kvp.pop().unwrap().to_owned().0),
-            //>1 returns no error as it is not against the spec for a registered tag to have multiple names.
-            //in which case, you're probably better off with no value rather than multiple.
             _ => None
         }
     }
