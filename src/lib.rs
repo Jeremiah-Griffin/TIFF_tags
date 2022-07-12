@@ -3,9 +3,9 @@
 mod tests;
 
 use std::collections::BTreeSet;
-use std::lazy::SyncLazy;
+use std::sync::LazyLock;
 
-static TAG_MAP: SyncLazy<BTreeSet<(u16, &'static str)>> = SyncLazy::new(||{
+static TAG_MAP: LazyLock<BTreeSet<(u16, &'static str)>> = LazyLock::new(||{
     let set: BTreeSet<(u16, &'static str)> = BTreeSet::from([
         (254,	"NewSubfileType" ),
         (255,	"SubfileType" ),
